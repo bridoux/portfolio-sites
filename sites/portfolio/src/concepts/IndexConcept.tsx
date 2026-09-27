@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { OWNER, PROJECTS, STATS, projectNumber, tagsInUse, type Project } from '../data/projects'
-import { cap, counted, listPhrase, numberWord, statLabel } from '../lib/words'
+import { cap, listPhrase, numberWord, statLabel } from '../lib/words'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { Link } from '../lib/router'
 import './index-concept.css'
@@ -132,23 +132,23 @@ export default function IndexConcept() {
     return () => window.removeEventListener('pointermove', move)
   }, [])
 
-  const statement = `${cap(counted(n, 'brand'))}, invented from scratch: ${listPhrase(PROJECTS.map((p) => p.noun))}. Each one designed, written, photographed and built with AI, then refined until it felt like it had a real team behind it.`
+  const statement = `Brands invented from scratch: ${listPhrase(PROJECTS.map((p) => p.noun))}. Each one designed, written, photographed and built with AI, then refined until it felt like it had a real team behind it.`
   const metaLine = STATS.scroll3d === 0
     ? 'Every site is built around typography, layout and motion.'
-    : `${cap(numberWord(STATS.scroll3d))} of ${n === STATS.scroll3d ? 'them' : `these ${numberWord(n)}`} take themselves apart as you scroll.${others > 0 ? ` ${cap(numberWord(others))} ${others === 1 ? 'leans' : 'lean'} on typography and layout.` : ''}`
+    : `${n === STATS.scroll3d ? 'All of them' : `${cap(numberWord(STATS.scroll3d))} of them`} take themselves apart as you scroll.${others > 0 ? ` ${cap(numberWord(others))} ${others === 1 ? 'leans' : 'lean'} on typography and layout.` : ''}`
 
   const hover = (p: Project) => ({ onPointerEnter: () => setActive(p), onFocus: () => setActive(p), onClick: () => setActive(null) })
 
   return (
     <div ref={root} className="ca" style={{ ['--bg' as string]: palette.bg, ['--fg' as string]: palette.fg, ['--accent' as string]: palette.accent }}>
-      <Loader onDone={() => setReady(true)} label={`Loading ${counted(n, 'world')}`} />
+      <Loader onDone={() => setReady(true)} label="Loading new worlds" />
       <div className="ca-grain" aria-hidden="true" />
 
       <SiteNav />
 
       <section className="ca-hero" id="top">
         <h1 className="ca-hero__title">
-          <span className="ca-hero__line"><span>{cap(counted(n, 'world'))},</span></span>
+          <span className="ca-hero__line"><span>New worlds,</span></span>
           <span className="ca-hero__line"><span><em>one</em> designer,</span></span>
           <span className="ca-hero__line"><span>built with <em>AI.</em></span></span>
         </h1>
