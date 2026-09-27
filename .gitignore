@@ -1,0 +1,15 @@
+# dependencies & builds
+node_modules/
+dist/
+*.tsbuildinfo
+
+# local-only working files (raw generated images, review screenshots)
+.raw/
+shots/
+
+# env & tooling
+.env*
+.vercel/
+*.log
+.DS_Store
+Thumbs.db

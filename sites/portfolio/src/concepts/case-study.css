@@ -1,0 +1,45 @@
+.cs-head { padding: 7.5rem var(--gutter) 3rem; }
+.cs-head__top { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 3rem; font-variant-numeric: tabular-nums; }
+.cs-back { position: relative; }
+.cs-back::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease); }
+.cs-back:hover::after { transform: scaleX(1); transform-origin: left; }
+.cs-title { margin: 0; }
+.cs-title__line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.cs-title__line > span { display: inline-block; }
+.cs-title__line:first-child { font-weight: 600; font-size: clamp(3.4rem, 1rem + 11vw, 14rem); line-height: 0.86; letter-spacing: -0.06em; }
+.cs-title__tag { font-size: clamp(1.6rem, 1rem + 2.4vw, 3.6rem); line-height: 1.05; margin-top: 1rem; }
+.cs-meta { display: grid; grid-template-columns: 1fr 0.6fr 1.4fr 1.4fr auto; gap: 1.6rem; align-items: start; margin: 4rem 0 0; padding-top: 1.4rem; border-top: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); }
+.cs-meta dt { font-size: 0.78rem; opacity: 0.55; margin-bottom: 0.4rem; }
+.cs-meta dd { margin: 0; font-size: 0.98rem; line-height: 1.45; }
+.cs-live { align-self: center; display: inline-flex; gap: 0.7rem; align-items: center; padding: 1rem 1.5rem; border-radius: 999px; background: var(--fg); color: var(--bg) !important; font-weight: 500; white-space: nowrap; transition: transform 0.5s var(--ease), background 0.4s; }
+.cs-live span { transition: transform 0.5s var(--ease); }
+.cs-live:hover { transform: scale(1.04); background: var(--accent); }
+.cs-live:hover span { transform: translate(3px, -3px); }
+@media (max-width: 1000px) { .cs-meta { grid-template-columns: 1fr 1fr; } .cs-live { grid-column: 1 / -1; justify-self: start; } }
+
+.cs-hero { margin: 0 var(--gutter); border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 10; box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.6); }
+.cs-hero img { width: 100%; height: 100%; object-fit: cover; }
+
+.cs-block { padding: 7rem var(--gutter) 0; }
+.cs-lead { margin: 0; max-width: 60rem; font-size: clamp(1.6rem, 1rem + 2.2vw, 3.2rem); line-height: 1.12; letter-spacing: -0.03em; font-weight: 500; }
+.cs-approach { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+.cs-approach li { border-top: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); padding-top: 1.2rem; }
+.cs-approach__n { font-size: 0.85rem; color: var(--accent); font-variant-numeric: tabular-nums; }
+.cs-approach h2 { margin: 1.4rem 0 0.8rem; font-weight: 500; font-size: clamp(1.4rem, 1rem + 1vw, 2rem); letter-spacing: -0.03em; line-height: 1.1; }
+.cs-approach p { margin: 0; opacity: 0.78; line-height: 1.6; }
+@media (max-width: 900px) { .cs-approach { grid-template-columns: 1fr; } }
+
+.cs-detail { margin: 7rem var(--gutter) 0; border-radius: 10px; overflow: hidden; aspect-ratio: 16 / 9; }
+.cs-detail img { width: 100%; height: 116%; object-fit: cover; margin-top: -8%; }
+
+.cs-next { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem; margin: 8rem 0 0; padding: 4rem var(--gutter); background: var(--next-bg); color: var(--next-fg) !important; position: relative; overflow: hidden; transition: padding 0.7s var(--ease); }
+.cs-next .ca-label { grid-column: 1 / -1; margin: 0; }
+.cs-next__name { font-size: clamp(3rem, 1rem + 9vw, 11rem); font-weight: 600; letter-spacing: -0.06em; line-height: 0.9; display: inline-flex; gap: 2rem; align-items: baseline; }
+.cs-next__name i { font-style: normal; font-size: 0.45em; transition: transform 0.7s var(--ease); }
+.cs-next:hover .cs-next__name i { transform: translateX(1.5rem); }
+.cs-next img { width: min(26vw, 380px); aspect-ratio: 16 / 10; object-fit: cover; border-radius: 8px; transform: rotate(3deg) translateY(10%); transition: transform 0.9s var(--ease); box-shadow: 0 30px 60px -20px rgba(0,0,0,0.5); }
+.cs-next:hover img { transform: rotate(0) translateY(0) scale(1.04); }
+@media (max-width: 800px) { .cs-next { grid-template-columns: 1fr; } .cs-next img { width: 100%; } }
+
+.cs-foot { padding-top: 2rem; }
+.cs-foot .ca-foot__row { margin-top: 0; }

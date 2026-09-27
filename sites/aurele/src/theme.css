@@ -1,0 +1,55 @@
+/*
+ * "Atelier" theme: an editorial light/dark rhythm. Each section paints itself from the
+ * semantic tokens and slides over the previous one with rounded "curtain" corners.
+ * Section order: scroller → collection → ticker → atelier → valley → service → viewing → footer
+ */
+
+:root {
+  --page: #0e0d0c; --hero-glow: #24211c; --hero-base: #0e0d0c;
+  --fg: #efe9df; --fg-dim: rgba(239, 233, 223, 0.62); --line: rgba(239, 233, 223, 0.13); --line-strong: rgba(239, 233, 223, 0.3);
+  --accent: #c8a66b; --accent-hi: #e6cd9d; --accent-ink: #14120f; --media-bg: #060606;
+  --curtain: clamp(1.6rem, 3.4vw, 3.6rem);
+}
+
+main > section:not(.scroller), .ticker, .footer {
+  position: relative;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+/* Light "paper" sections */
+:is(.collection, .service, .footer) {
+  --bg: #ece7de; --fg: #17140f; --fg-dim: rgba(23, 20, 15, 0.64); --line: rgba(23, 20, 15, 0.14); --line-strong: rgba(23, 20, 15, 0.32);
+  --accent: #8a6a3c; --accent-hi: #6d5128; --accent-ink: #f4efe6; --media-bg: #0b0b0b; --error: #b0412a;
+  color-scheme: light;
+}
+.service { --bg: #f3efe8; }
+/* Dark sections */
+:is(.atelier, .viewing) { --bg: #151412; }
+
+/* Curtains: each section overlaps the one before it */
+:is(.collection, .atelier, .valley, .service, .viewing, .footer) {
+  border-radius: var(--curtain) var(--curtain) 0 0;
+  margin-top: calc(var(--curtain) * -1);
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+/* The ticker band sits flush; the atelier's rounded corners reveal it instead of covering it */
+.atelier { margin-top: 0; }
+
+.valley { --valley-top: #151412; --valley-bottom: #0e0d0c; }
+.valley__img { filter: brightness(0.62) saturate(0.8) sepia(0.12); }
+.field input, .field select { color-scheme: dark; }
+.footer__word { color: #17140f; opacity: 1; }
+
+/* Section index marker */
+.idx { display: inline-flex; align-items: center; gap: 0.9rem; margin-right: 0.9rem; font-variant-numeric: tabular-nums; }
+.idx::after { content: ''; width: 2.4rem; height: 1px; background: currentColor; opacity: 0.6; }
+
+/* Bronze specs ticker between Collection and Atelier */
+.ticker { --bg: #8a6a3c; --fg: #f4efe6; --accent: #f4efe6; --accent-hi: #fff; overflow: hidden; padding: 1.3rem 0; }
+.ticker__track { display: flex; width: max-content; animation: ticker 48s linear infinite; }
+.ticker span { display: inline-flex; align-items: center; gap: 2.4rem; padding-right: 2.4rem; font-family: var(--serif); font-size: clamp(1.3rem, 1rem + 1vw, 2rem); font-weight: 300; white-space: nowrap; color: var(--fg); }
+.ticker span::after { content: '✦'; font-size: 0.7em; color: var(--accent); }
+.ticker em { color: var(--accent-hi); }
+@keyframes ticker { to { transform: translateX(-50%); } }

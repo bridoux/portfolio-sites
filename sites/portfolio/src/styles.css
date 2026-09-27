@@ -1,0 +1,5 @@
+*, *::before, *::after { box-sizing: border-box; }
+html.lenis, html.lenis body { height: auto; }
+body { margin: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; background: #0c0c0c; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid #ff5a36; outline-offset: 3px; }
