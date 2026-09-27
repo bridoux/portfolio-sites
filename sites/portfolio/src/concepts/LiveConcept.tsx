@@ -38,7 +38,8 @@ function layoutGrid(n: number, w: number, h: number) {
 /** Deterministic loose "pile" offsets around the centre, so the stack looks tossed, not random each load. */
 const pile = (i: number) => ({ x: Math.sin(i * 2.4) * 6, y: Math.cos(i * 1.7) * 4, r: Math.sin(i * 3.1) * 8 })
 
-const hostOf = (p: Project) => `${p.id}.site`
+/** The address shown in each window's URL bar: the real host of the live site. */
+const hostOf = (p: Project) => { try { return new URL(p.url).host } catch { return p.url } }
 
 function Window({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }) {
   return (
