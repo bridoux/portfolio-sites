@@ -35,3 +35,10 @@ In development, add `?stress=24` to any URL to pad the list with clones (up to 6
 node tools/stress-shots.mjs 24     # screenshots of every page with 24 projects
 node tools/portfolio-e2e.mjs       # routes and navigation smoke test
 ```
+
+## Services and contact
+
+- Packages, prices and the care plan live in `src/data/services.ts`.
+- `OWNER.email` and `OWNER.booking` (a Cal.com or Calendly link) live in `src/data/projects.ts`. The "Book a call" button is hidden while `booking` is empty.
+- The contact form posts JSON to `VITE_CONTACT_ENDPOINT` when it is set (for example a Formspree form URL, configured as a Vercel environment variable). Without it, the form opens the visitor's mail app with the message filled in.
+- Form logic tests: `node --test tools/contact.test.mjs`. Flow tests: `node tools/portfolio-e2e.mjs`.

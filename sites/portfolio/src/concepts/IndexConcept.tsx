@@ -3,6 +3,8 @@ import { OWNER, PROJECTS, STATS, projectNumber, tagsInUse, type Project } from '
 import { cap, listPhrase, numberWord, statLabel } from '../lib/words'
 import { gsap, prefersReducedMotion } from '../lib/motion'
 import { Link } from '../lib/router'
+import Services from './Services'
+import ContactForm from './ContactForm'
 import './index-concept.css'
 
 const BASE = { bg: '#0c0c0c', fg: '#ecebe7', accent: '#ff5a36' }
@@ -49,7 +51,7 @@ export function SiteNav() {
   return (
     <header className="ca-nav">
       <Link to="/" className="ca-nav__mark">{OWNER.name}<sup>©26</sup></Link>
-      <nav aria-label="Primary"><Link to="/#work">Work</Link><Link to="/#about">About</Link><a href={`mailto:${OWNER.email}`}>Contact</a></nav>
+      <nav aria-label="Primary"><Link to="/#work">Work</Link><Link to="/#services">Services</Link><Link to="/#about">About</Link><Link to="/#contact">Contact</Link></nav>
       <span className="ca-nav__time">{OWNER.location} · {clock}</span>
     </header>
   )
@@ -74,6 +76,7 @@ export default function IndexConcept() {
   const [ready, setReady] = useState(false)
   const [filter, setFilter] = useState<string | null>(null)
   const [view, setView] = useState<View>(initialView)
+  const [preset, setPreset] = useState('')
   const palette = active?.palette ?? BASE
 
   const n = PROJECTS.length
@@ -153,7 +156,7 @@ export default function IndexConcept() {
           <span className="ca-hero__line"><span>built with <em>AI.</em></span></span>
         </h1>
         <div className="ca-hero__meta">
-          <p>{OWNER.role}. Selected work, {yearSpan}.</p>
+          <p>{OWNER.role}. Concept work, {yearSpan}. Now taking on client projects.</p>
           <p>{metaLine}</p>
           <a href="#work" className="ca-hero__cue">Scroll to the work <span aria-hidden="true">↓</span></a>
         </div>
@@ -161,7 +164,7 @@ export default function IndexConcept() {
 
       <section className={`ca-index ca-index--${view}`} id="work" onPointerLeave={() => setActive(null)}>
         <div className="ca-toolbar">
-          <p className="ca-toolbar__count">Selected work <sup>({String(shown.length).padStart(2, '0')})</sup></p>
+          <p className="ca-toolbar__count">Concept work <sup>({String(shown.length).padStart(2, '0')})</sup></p>
           {tags.length > 1 && (
             <div className="ca-filters" role="group" aria-label="Filter projects">
               <button type="button" aria-pressed={filter === null} onClick={() => setFilter(null)}>All <sup>{n}</sup></button>
@@ -230,9 +233,23 @@ export default function IndexConcept() {
         </dl>
       </section>
 
-      <footer className="ca-foot" id="contact">
-        <p className="ca-label">(Have a project in mind?)</p>
-        <a className="ca-foot__cta" href={`mailto:${OWNER.email}`}>Let's talk<span aria-hidden="true">→</span></a>
+      <Services onPick={setPreset} />
+
+      <section className="ca-contact" id="contact" aria-labelledby="contact-title">
+        <div className="ca-contact__intro">
+          <p className="ca-label">(Have a project in mind?)</p>
+          <h2 className="ca-contact__title" id="contact-title">Let's make yours <em>next.</em></h2>
+          <p>Tell me what you're building. Every inquiry gets a reply within one working day, and a free homepage mock-up if we're a fit.</p>
+          <div className="ca-contact__links">
+            {OWNER.booking && <a className="ca-pill" href={OWNER.booking} target="_blank" rel="noopener noreferrer">Book a 20-min call ↗</a>}
+            <a className="ca-pill ca-pill--ghost" href={`mailto:${OWNER.email}`}>{OWNER.email}</a>
+          </div>
+        </div>
+        <ContactForm preset={preset} />
+      </section>
+
+      <footer className="ca-foot">
+        <a className="ca-foot__cta" href={OWNER.booking || `mailto:${OWNER.email}`}>Let's talk<span aria-hidden="true">→</span></a>
         <div className="ca-foot__row"><span>{OWNER.email}</span><span>Instagram · LinkedIn · Read.cv</span><span>© 2026 {OWNER.name}</span></div>
       </footer>
     </div>

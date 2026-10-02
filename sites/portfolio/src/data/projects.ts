@@ -1,9 +1,16 @@
-/** Portfolio owner. The email is still a placeholder: replace it with the address to publish. */
+/**
+ * Portfolio owner. The email is still a placeholder: replace it with the address to publish.
+ * `booking` is a scheduling link (Cal.com, Calendly); the "Book a call" buttons hide while it is empty.
+ * The contact form posts to VITE_CONTACT_ENDPOINT (e.g. a Formspree form URL) when set,
+ * and falls back to opening the visitor's mail app.
+ */
 export const OWNER = {
   name: 'Eric Bridoux',
   role: 'Designer & creative technologist',
   email: 'hello@example.com',
+  booking: '',
   location: 'Worldwide',
+  contactEndpoint: (import.meta.env?.VITE_CONTACT_ENDPOINT as string | undefined) ?? '',
 }
 
 export interface Project {
