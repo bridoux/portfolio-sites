@@ -7,7 +7,7 @@
 export const OWNER = {
   name: 'Eric Bridoux',
   role: 'Designer & creative technologist',
-  email: 'ericbridoux1980@gmail.com',
+  email: 'ericyatie@ericbridoux.com',
   booking: '',
   location: 'Worldwide',
   contactEndpoint: (import.meta.env?.VITE_CONTACT_ENDPOINT as string | undefined) ?? '',
