@@ -14,5 +14,28 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Concept credit: links back to the portfolio; hidden when embedded (e.g. the portfolio's /live view) -->
+    <a id="concept-credit" href="https://www.ericbridoux.com/work/kestrel" target="_blank" rel="noopener" aria-label="Concept site designed and built by Eric Bridoux (opens in a new tab)">
+      <span class="cc-dot"></span>Concept by Eric Bridoux <span aria-hidden="true">↗</span>
+    </a>
+    <style>
+      #concept-credit{position:fixed;left:14px;bottom:14px;z-index:2147483000;display:inline-flex;align-items:center;gap:7px;padding:7px 12px 7px 10px;border-radius:999px;background:rgba(12,12,12,.78);color:#ecebe7;font:500 11.5px/1 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.01em;text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(236,235,231,.14);opacity:.82;transition:opacity .3s,transform .3s}
+      #concept-credit:hover,#concept-credit:focus-visible{opacity:1;transform:translateY(-1px)}
+      #concept-credit .cc-dot{width:6px;height:6px;border-radius:50%;background:#ff5a36}
+      #concept-credit.is-away{opacity:0;transform:translateY(8px);pointer-events:none}
+      @media print{#concept-credit{display:none}}
+    </style>
+    <script>
+      (function () {
+        var c = document.getElementById('concept-credit')
+        if (window.self !== window.top) { c.remove(); return }
+        // On phones, show it on the first screen only so it never sits over buttons further down
+        var small = window.matchMedia('(max-width: 700px)')
+        var update = function () { c.classList.toggle('is-away', small.matches && window.scrollY > window.innerHeight * 0.5) }
+        window.addEventListener('scroll', update, { passive: true })
+        small.addEventListener('change', update)
+        update()
+      })()
+    </script>
   </body>
 </html>

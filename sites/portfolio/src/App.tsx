@@ -23,7 +23,7 @@ function resolve(path: string) {
   const work = clean.match(/^\/work\/([\w-]+)$/)
   const project = work && PROJECTS.find((p) => p.id === work[1])
   if (project) return { key: `work-${project.id}`, title: `${project.name} — case study · ${OWNER.name}`, page: <CaseStudy project={project} /> }
-  return { key: 'home', title: `${OWNER.name} — Selected work`, page: <IndexConcept /> }
+  return { key: 'home', title: `${OWNER.name} — Custom websites, designed and built in days`, page: <IndexConcept /> }
 }
 
 export default function App() {

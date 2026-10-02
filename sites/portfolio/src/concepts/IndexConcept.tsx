@@ -250,7 +250,7 @@ export default function IndexConcept() {
 
       <footer className="ca-foot">
         <a className="ca-foot__cta" href={OWNER.booking || `mailto:${OWNER.email}`}>Let's talk<span aria-hidden="true">→</span></a>
-        <div className="ca-foot__row"><span>{OWNER.email}</span><span>Instagram · LinkedIn · Read.cv</span><span>© 2026 {OWNER.name}</span></div>
+        <div className="ca-foot__row"><a href={`mailto:${OWNER.email}`}>{OWNER.email}</a><span>Available for new projects</span><span>© 2026 {OWNER.name}</span></div>
       </footer>
     </div>
   )
