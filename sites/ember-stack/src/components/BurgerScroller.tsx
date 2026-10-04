@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { ScrollTrigger, prefersReducedMotion } from '../lib/motion'
 import { Embers } from './Embers'
+import STACK from '../data/stackLayers.json'
 
 const CAPTIONS = [
   { tag: 'Baked daily · 4 AM', title: 'The Crown', body: 'Potato brioche from Hearth & Crumb, three blocks away. We brush it with beef tallow and toast it face-down until it crackles.' },
@@ -14,26 +15,20 @@ const CAPTIONS = [
 /** Caption windows: each focuses one layer index (top → bottom). */
 const CAPTION_START = 0.26
 const CAPTION_SPAN = 0.075
-const CAPTION_FOCUS = [0, 1, 3.5, 6.5, 8, 9]
+const CAPTION_FOCUS = [0, 1.5, 4.5, 7.5, 9, 10]
+
+interface Layer { key: string; src: string; w: number; y: number; drift: number }
 
 /**
- * Photographic ingredient layers, top → bottom. Sizes and assembled positions are in
- * units of the burger's width (W), measured against the hero photograph.
+ * Photographic ingredient layers, top → bottom (tuned with tools/burger-stack.cjs). Widths and
+ * assembled centres are in units of the burger's width (W); together they form the hero burger.
  */
-const LAYERS = [
-  { key: 'bun-top', src: '/img/layers/bun-top.webp', w: 0.9, y: -0.31, drift: -0.5 },
-  { key: 'pickles', src: '/img/layers/pickles.webp', w: 0.86, y: -0.13, drift: 0.6 },
-  { key: 'cheese-a', src: '/img/layers/cheese.webp', w: 0.96, y: -0.04, drift: -0.35 },
-  { key: 'patty-a', src: '/img/layers/patty.webp', w: 1, y: 0.0, drift: 0.4 },
-  { key: 'cheese-b', src: '/img/layers/cheese.webp', w: 0.94, y: 0.09, drift: 0.3, flip: true },
-  { key: 'patty-b', src: '/img/layers/patty.webp', w: 0.99, y: 0.13, drift: -0.45, flip: true },
-  { key: 'tomato', src: '/img/layers/tomato.webp', w: 0.8, y: 0.21, drift: 0.5 },
-  { key: 'lettuce', src: '/img/layers/lettuce.webp', w: 0.98, y: 0.27, drift: -0.4 },
-  { key: 'sauce', src: '/img/layers/sauce.webp', w: 0.8, y: 0.34, drift: 0.35 },
-  { key: 'bun-bottom', src: '/img/layers/bun-bottom.webp', w: 0.86, y: 0.41, drift: -0.2 },
-] as const
+const LAYERS: Layer[] = STACK
 
-const GAP = 0.3 // exploded spacing, in W
+/** Assembled burger: height and centre offset in W, so it can be fitted to the hero box. */
+const ASSEMBLED = { height: 1.23, centre: -0.045 }
+
+const GAP = 0.27 // exploded spacing, in W
 const MID = (LAYERS.length - 1) / 2
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
@@ -69,6 +64,7 @@ export function BurgerScroller({ onOrder }: Props) {
     let current = 0
     let raf = 0
     let last = performance.now()
+    const born = last
 
     const onUpdate = (p: number) => {
       target = p
@@ -92,7 +88,10 @@ export function BurgerScroller({ onOrder }: Props) {
       const vw = window.innerWidth
       const vh = window.innerHeight
       const wide = vw / vh > 1.1
-      const W = photo.clientWidth // the trimmed photo is exactly one burger wide
+      // The hero box (.stack__photo) sets the burger's size; fit the assembled stack's height into it
+      const box = photo.clientWidth
+      const W = (box * 1.04) / ASSEMBLED.height
+      const intro = reduce ? 1 : easeOutBack(clamp01((now - born) / 1200))
 
       // Ingredients: apart top-first (0.06→0.22), then restack bottom-first with a bounce (0.72→0.9)
       const apart = smooth(0.06, 0.22, p)
@@ -107,8 +106,7 @@ export function BurgerScroller({ onOrder }: Props) {
         const x = L.drift * e * W * (wide ? 0.22 : 0.08)
         const rot = L.drift * 7 * e + Math.sin(t * 0.9 + i) * 1.6 * e
         el.style.width = `${L.w * W}px`
-        const mirror = 'flip' in L && L.flip ? ' scaleX(-1)' : ''
-        el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rot}deg)${mirror}`
+        el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) rotate(${rot}deg)`
       })
 
       // Camera: hero → overview → per-ingredient focus → overview → final
@@ -116,10 +114,11 @@ export function BurgerScroller({ onOrder }: Props) {
       const overviewScale = Math.min(1, (vh * 0.76) / span)
       const focusScale = wide ? 1.02 : 0.9
       const fy = explodedY(focusIndex(p)) * W
-      const heroCam = { s: 1, x: 0, y: 0 }
+      const bob = Math.sin(t * 1.05) * 0.008 * W * (1 - apart)
+      const heroCam = { s: 0.9 + 0.1 * intro, x: 0, y: -ASSEMBLED.centre * W + (1 - intro) * 0.08 * W + bob }
       const overview = { s: overviewScale, x: 0, y: -vh * 0.07 }
       const focus = { s: focusScale, x: wide ? vw * 0.17 : 0, y: -fy * focusScale + (wide ? 0 : -vh * 0.08) }
-      const finalCam = { s: 0.8, x: 0, y: -vh * 0.1 }
+      const finalCam = { s: 0.8, x: 0, y: -vh * 0.13 - ASSEMBLED.centre * W * 0.8 + bob }
       const mix = (a: typeof heroCam, b: typeof heroCam, k: number) => ({ s: lerp(a.s, b.s, k), x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k) })
       let cam = heroCam
       if (p < 0.22) cam = mix(heroCam, overview, smooth(0.05, 0.17, p))
@@ -127,13 +126,12 @@ export function BurgerScroller({ onOrder }: Props) {
       else cam = mix(focus, finalCam, smooth(0.72, 0.79, p)) // restack straight into the final framing
       column.style.transform = `translate3d(${cam.x}px, ${cam.y}px, 0) scale(${cam.s})`
 
-      // The whole photograph stands in for the assembled burger at the start and the end
-      const photoIn = Math.max(1 - smooth(0.01, 0.05, p), smooth(0.86, 0.93, p))
-      const heroShrink = 1 - smooth(0.01, 0.05, p) * 0.04
-      const photoCam = p > 0.5 ? finalCam : { s: heroShrink, x: 0, y: 0 }
-      photo.style.opacity = String(photoIn)
-      photo.style.transform = `translate(-50%, -50%) translate3d(${photoCam.x}px, ${photoCam.y}px, 0) scale(${photoCam.s})`
-      column.style.opacity = String(1 - photoIn)
+      // Warm glow under the assembled burger at the start and the end
+      const glow = Math.max(1 - smooth(0.01, 0.06, p), smooth(0.86, 0.93, p))
+      const glowCam = p > 0.5 ? finalCam : heroCam
+      photo.style.opacity = String(glow * intro)
+      photo.style.transform = `translate(-50%, -50%) translate3d(${glowCam.x}px, ${glowCam.y + ASSEMBLED.centre * W * glowCam.s}px, 0) scale(${glowCam.s})`
+      column.style.opacity = String(Math.min(1, intro * 1.5))
     }
     raf = requestAnimationFrame(tick)
 
@@ -146,7 +144,7 @@ export function BurgerScroller({ onOrder }: Props) {
         <Embers className="stack__embers" />
         <div className="stack__glow" aria-hidden="true" />
 
-        <div className="stack__column" ref={columnRef} aria-hidden="true">
+        <div className="stack__column" ref={columnRef} role="img" aria-label="The Ember Double: two smashed patties with American cheese, pickles, onion, tomato, lettuce and Ember sauce on a sesame brioche bun">
           {LAYERS.map((L, i) => (
             <img
               key={L.key}
@@ -154,14 +152,14 @@ export function BurgerScroller({ onOrder }: Props) {
               className="ingredient"
               src={L.src}
               alt=""
+              decoding="async"
+              fetchPriority={i === 0 ? 'high' : 'auto'}
               style={{ zIndex: LAYERS.length - i }}
             />
           ))}
         </div>
 
-        <div className="stack__photo" ref={photoRef}>
-          <img src="/img/hero-burger.webp" alt="The Ember Double: two smashed patties, American cheese, pickles, onion, tomato and lettuce on a sesame brioche bun" width={1400} height={1451} fetchPriority="high" />
-        </div>
+        <div className="stack__photo" ref={photoRef} aria-hidden="true" />
 
         <div className="hero">
           <p className="hero__kicker"><span className="dot" /> Austin, TX · Smashing since 2019</p>

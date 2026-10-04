@@ -1,0 +1,13 @@
+[
+  {"key": "top-bun", "src": "/img/stack/top-bun.webp", "w": 0.92, "y": -0.42, "drift": -0.5},
+  {"key": "pickles", "src": "/img/stack/pickles.webp", "w": 0.8, "y": -0.215, "drift": 0.6},
+  {"key": "onions", "src": "/img/stack/onions.webp", "w": 0.8, "y": -0.185, "drift": -0.45},
+  {"key": "cheese-upper", "src": "/img/stack/cheese-upper.webp", "w": 0.98, "y": -0.135, "drift": 0.35},
+  {"key": "patty-upper", "src": "/img/stack/patty-upper.webp", "w": 1, "y": -0.085, "drift": -0.4},
+  {"key": "cheese-lower", "src": "/img/stack/cheese-lower.webp", "w": 0.97, "y": 0.02, "drift": 0.3},
+  {"key": "patty-lower", "src": "/img/stack/patty-lower.webp", "w": 0.98, "y": 0.075, "drift": -0.45},
+  {"key": "tomato", "src": "/img/stack/tomato.webp", "w": 0.84, "y": 0.15, "drift": 0.5},
+  {"key": "lettuce", "src": "/img/stack/lettuce.webp", "w": 1.04, "y": 0.2, "drift": -0.4},
+  {"key": "sauce", "src": "/img/stack/sauce.webp", "w": 0.88, "y": 0.255, "drift": 0.35},
+  {"key": "bottom-bun", "src": "/img/stack/bottom-bun.webp", "w": 0.92, "y": 0.335, "drift": -0.2}
+]

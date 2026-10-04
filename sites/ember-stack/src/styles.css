@@ -68,14 +68,11 @@ button { font: inherit; color: inherit; }
 .stack__glow { position: absolute; left: 50%; top: 70%; width: min(70vw, 110vh); height: 34vh; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 110, 30, 0.34), rgba(255, 60, 0, 0) 70%); filter: blur(10px); z-index: 1; pointer-events: none; }
 @media (max-width: 700px) { .stack__column { top: 53%; } }
 .stack__photo {
-  position: absolute; left: 50%; top: 57%; z-index: 2; width: min(47vw, 82vh); aspect-ratio: 1400 / 1451;
+  position: absolute; left: 50%; top: 57%; z-index: 1; width: min(47vw, 82vh); aspect-ratio: 1400 / 1451; /* sizing box + glow for the assembled burger */
   transform: translate(-50%, -50%); will-change: transform, opacity;
   pointer-events: none;
 }
 .stack__photo::before { content: ''; position: absolute; left: 8%; right: 8%; bottom: -6%; height: 30%; border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 110, 30, 0.55), rgba(255, 60, 0, 0) 70%); filter: blur(18px); }
-.stack__photo img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 60px rgba(255, 110, 30, 0.18)); animation: hover-burger 6s ease-in-out infinite, burger-in 1.2s var(--bounce) both 0.2s; }
-@keyframes hover-burger { 50% { transform: translateY(-1.4%) rotate(-0.6deg); } }
-@keyframes burger-in { from { opacity: 0; transform: translateY(8%) scale(0.9); } }
 @media (max-width: 700px) { .stack__photo { width: min(98vw, 64vh); top: 53%; } }
 
 .hero { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: clamp(0, calc(1 - var(--p) * 12), 1); }
