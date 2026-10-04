@@ -1,0 +1,62 @@
+{
+  "count": 80,
+  "width": 720,
+  "height": 1280,
+  "path": "/img/seq/f",
+  "hero": {
+    "y": 0.52,
+    "w": 0.8,
+    "top": 0.22300000000000003,
+    "bottom": 0.7765000000000001
+  },
+  "exploded": {
+    "top": 0.085,
+    "bottom": 0.9150000000000001,
+    "layers": [
+      {
+        "key": "top-bun",
+        "y": 0.085
+      },
+      {
+        "key": "pickles",
+        "y": 0.2004
+      },
+      {
+        "key": "onions",
+        "y": 0.2674
+      },
+      {
+        "key": "cheese-upper",
+        "y": 0.3418
+      },
+      {
+        "key": "patty-upper",
+        "y": 0.4274
+      },
+      {
+        "key": "cheese-lower",
+        "y": 0.5019
+      },
+      {
+        "key": "patty-lower",
+        "y": 0.5875
+      },
+      {
+        "key": "tomato",
+        "y": 0.6731
+      },
+      {
+        "key": "lettuce",
+        "y": 0.7624
+      },
+      {
+        "key": "sauce",
+        "y": 0.8331
+      },
+      {
+        "key": "bottom-bun",
+        "y": 0.915
+      }
+    ]
+  }
+}

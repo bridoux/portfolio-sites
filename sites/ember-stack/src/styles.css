@@ -61,21 +61,23 @@ button { font: inherit; color: inherit; }
 /* ── The Stack (3D) ──────────────────────────────────────────────── */
 .stack { position: relative; height: 720vh; --p: 0; background: radial-gradient(ellipse 70% 60% at 50% 60%, #3a1a0c 0%, #1a100b 45%, var(--char) 80%); }
 .stack__sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-/* Photographic ingredient column; JS positions each layer around the burger's centre */
-.stack__column { position: absolute; left: 50%; top: 57%; width: 0; height: 0; z-index: 2; transform-origin: 0 0; will-change: transform, opacity; opacity: 0; }
-.ingredient { position: absolute; left: 0; top: 0; height: auto; max-width: none; transform: translate(-50%, -50%); will-change: transform; filter: drop-shadow(0 26px 26px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 40px rgba(255, 100, 20, 0.12)); }
-.stack__embers { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-.stack__glow { position: absolute; left: 50%; top: 70%; width: min(70vw, 110vh); height: 34vh; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 110, 30, 0.34), rgba(255, 60, 0, 0) 70%); filter: blur(10px); z-index: 1; pointer-events: none; }
-@media (max-width: 700px) { .stack__column { top: 53%; } }
-.stack__photo {
-  position: absolute; left: 50%; top: 57%; z-index: 1; width: min(47vw, 82vh); aspect-ratio: 1400 / 1451; /* sizing box + glow for the assembled burger */
-  transform: translate(-50%, -50%); will-change: transform, opacity;
-  pointer-events: none;
+/* Scroll-scrubbed film (Higgsfield video → WebP frames). JS sizes it to "contain" and moves it like a camera */
+.stack__film {
+  position: absolute; left: 50%; top: 50%; z-index: 2; display: block;
+  transform: translate(-50%, -50%); transform-origin: 50% 50%; will-change: transform, opacity; opacity: 0;
+  background: #120b08 center / 100% 100% no-repeat;
+  /* "lighten" lets the section's glow show through the film's dark backdrop, so the frame has no visible edge;
+     the soft mask only hides the very border */
+  mix-blend-mode: lighten;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent), linear-gradient(to right, transparent, #000 21%, #000 79%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent), linear-gradient(to right, transparent, #000 21%, #000 79%, transparent);
+  mask-composite: intersect;
 }
-.stack__photo::before { content: ''; position: absolute; left: 8%; right: 8%; bottom: -6%; height: 30%; border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 110, 30, 0.55), rgba(255, 60, 0, 0) 70%); filter: blur(18px); }
-@media (max-width: 700px) { .stack__photo { width: min(98vw, 64vh); top: 53%; } }
+.stack__embers { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; mix-blend-mode: screen; }
+.stack__glow { position: absolute; left: 50%; top: 70%; width: min(70vw, 110vh); height: 34vh; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(255, 110, 30, 0.34), rgba(255, 60, 0, 0) 70%); filter: blur(10px); z-index: 1; pointer-events: none; }
 
-.hero { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: clamp(0, calc(1 - var(--p) * 12), 1); }
+.hero { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: clamp(0, calc(1 - var(--p) * 12), 1); }
 .hero__kicker { position: absolute; top: 6.5rem; left: 50%; transform: translateX(-50%); margin: 0; font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; display: flex; align-items: center; gap: 0.6rem; white-space: nowrap; }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 0 0 var(--ember); animation: pulse 1.8s infinite; }
 @keyframes pulse { 70% { box-shadow: 0 0 0 12px rgba(255,77,23,0); } 100% { box-shadow: 0 0 0 0 rgba(255,77,23,0); } }
